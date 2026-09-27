@@ -1,0 +1,16 @@
+DBT_First_Model:
+  target: dev
+
+  outputs:
+    dev:
+      type: snowflake
+      account: FJMEBKA-WGB94150
+
+      user: RakeshB
+      password: Test75489001122
+
+      role: ACCOUNTADMIN
+      warehouse: COMPUTE_WH
+      database: SALES_DBT_DB
+      schema: MART
+      threads: 4

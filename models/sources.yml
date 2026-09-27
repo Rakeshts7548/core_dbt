@@ -1,0 +1,38 @@
+version: 2
+
+sources:
+  - name: retails
+    database: RETAILS
+    schema: PUBLIC
+
+    tables:
+      - name: TRANSACTION_RAW
+      - name: TRANSACTION_RAW1
+      
+  - name: IOT
+    database: IOT_DB
+    schema: IOT_SCHEMA
+
+    tables:
+      - name: LOAD_IOTV2_EUEXPERIENCE
+
+  - name: sales_raw
+    database: SALES_RAW_DB
+    schema: raw
+    description: "Raw source data loaded via Fivetran"
+
+    tables:
+      - name: SALES_ORDER_RAW
+        description: "Sales Order Raw Table"
+
+      - name: CUSTOMER_RAW
+        description: "Customer Raw Table"
+
+      - name: PRODUCT_RAW
+        description: "Product Raw Table"
+
+      - name: STORE_RAW
+        description: "Store Raw Table"
+
+      - name: PROMOTION_RAW
+        description: "Promotion Raw Table"    
