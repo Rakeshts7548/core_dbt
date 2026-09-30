@@ -1,0 +1,28 @@
+{{
+    config
+    (
+        materialized='incremental',
+        pre_hook = ["truncate table  {{this}} ;"],
+        tags=['intrim','salesorders']
+    )
+}}
+
+SELECT
+ORDER_ID,
+ORDER_LINE_ID,
+ORDER_DATE,
+CUSTOMER_ID,
+PRODUCT_ID,
+STORE_ID,
+PROMOTION_ID,
+QUANTITY,
+UNIT_PRICE,
+(QUANTITY * UNIT_PRICE) AS GROSS_SALES_AMOUNT,
+DISCOUNT_AMOUNT,
+((QUANTITY * UNIT_PRICE) - DISCOUNT_AMOUNT) AS NET_SALES_AMOUNT,
+TAX_AMOUNT,
+(((QUANTITY * UNIT_PRICE) - DISCOUNT_AMOUNT) + TAX_AMOUNT) AS TOTAL_SALES_AMOUNT,
+ORDER_STATUS,
+CREATED_TS,
+UPDATED_TS
+FROM {{ ref('stg_sales_order') }}

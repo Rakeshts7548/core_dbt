@@ -22,14 +22,14 @@ models:
   DBT_First_Model:
 
     staging:
-      +materialized: view
+      +materialized: incremental
       +database: SALES_DBT_DB
       +schema: STG
 
     intermediate:
-      +materialized: table
+      +materialized: incremental
       +database: SALES_DBT_DB
-      +schema: INT
+      +schema: WI
 
     marts:
       +materialized: incremental

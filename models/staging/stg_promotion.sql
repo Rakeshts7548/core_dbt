@@ -3,10 +3,10 @@
     (
         materialized='incremental',
         unique_key='PROMOTION_ID',
-        incremental_strategy='merge'
+        pre_hook=["delete from {{this}};"],
+        tags=['staging','promotions']
     )
 }}
-select * from {{ source('sales_raw','PROMOTION_RAW') }}
-{% if is_incremental() %}
-where UPDATED_TS > (select max(UPDATED_TS) from {{ this }})
-{% endif %}
+select 
+PROMOTION_ID, PROMOTION_NAME, DISCOUNT_PERCENT, START_DATE, END_DATE, current_timestamp() as CREATED_TS,current_timestamp() as UPDATED_TS
+ from {{ source('sales_raw','PROMOTION_RAW') }}

@@ -1,12 +1,13 @@
+{# unique_key='CUSTOMER_ID' #}
+{# pre_hook=["delete from {{this}};"] #}
+
 {{
-    config
-    (
+    config(
         materialized='incremental',
-        unique_key='CUSTOMER_ID',
-        incremental_strategy='merge'
+        pre_hook=["truncate table {{this}};"],
+        tags=['staging','customer']
     )
 }}
-select * from {{ source('sales_raw','CUSTOMER_RAW') }}
-{% if is_incremental() %}
-where UPDATED_TS > (select max(UPDATED_TS) from {{ this }})
-{% endif %}
+
+select  CUSTOMER_ID, CUSTOMER_NAME, EMAIL, PHONE, GENDER, CITY, STATE, COUNTRY, current_timestamp() as CREATED_TS,current_timestamp() as UPDATED_TS
+from {{ source('sales_raw','CUSTOMER_RAW') }}

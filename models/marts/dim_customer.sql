@@ -1,9 +1,15 @@
-{{ config(
-    materialized='table'
-) }}
+{#on_schema_change='sync_all_columns'#}
 
-SELECT DISTINCT
-    CUSTOMER_ID AS CUSTOMER_KEY,
+{{
+    config(
+        materialized='incremental',
+        incremental_strategy='merge',
+        unique_key=['CUSTOMER_ID'],
+        tags=['mart','customers']
+    )
+}}
+
+SELECT 
     CUSTOMER_ID,
     CUSTOMER_NAME,
     EMAIL,
@@ -11,5 +17,7 @@ SELECT DISTINCT
     GENDER,
     CITY,
     STATE,
-    COUNTRY
-FROM {{ ref('stg_customer') }}
+    COUNTRY,
+    CREATED_TS,
+    UPDATED_TS
+FROM {{ ref('wi_customer') }}
